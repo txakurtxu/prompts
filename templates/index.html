@@ -1,0 +1,79 @@
+<!doctype html>
+<html style="height: 100%;">
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
+        <script type="text/javascript" src="{{ url_for('static', filename='js_vars.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js_lib.js') }}"></script>
+        <!--script type="text/javascript">
+            var up_info = eval(decodeURIComponent("{{up_info}}"));
+            //var res_data = eval(decodeURIComponent("{{res_data}}"));
+        </script-->
+    </head>
+    <body onload="js_init();">
+        <div style="height: inherit; display: flex;">
+        <div id="c1" class="vcol">
+        <div id="c11" class="hcol2">
+            <div class="line">Prompt</div>
+            <textarea id="tapr" class="tarea"></textarea>
+        </div>
+        <div id="c12" class="hcol2">
+            <div class="line">Models</div>
+            <div style="display: flex; align-items: center; padding-top: 10px;">
+                <select id="segp" class="sel" autocomplete="off"></select>
+                <input id="ingp" class="inp" />
+                <button id="bugp" class="but">Run GPT</button>
+            </div>
+            <div style="display: flex; align-items: center; padding-top: 10px;">
+                <select id="sege" class="sel" autocomplete="off"></select>
+                <input id="inge" class="inp" />
+                <button id="buge" class="but">Run Gemini</button>
+            </div>
+            <div style="display: flex; align-items: center; padding-top: 10px;">
+                <select id="seal" class="sel" autocomplete="off"></select>
+                <input id="inal" class="inp" />
+                <button id="bual" class="but">Run All</button>
+            </div>
+        </div>
+        </div>
+        <div id="c2" class="vcol">
+        <div id="c21" class="hcol2">
+            <div class="line">Clinical history</div>
+            <textarea id="tach" class="tarea"></textarea>
+        </div>
+        <div id="c22" class="hcol2">
+            <div class="line">Schema</div>
+            <textarea id="tasc" class="tarea"></textarea>
+        </div>
+        </div>
+        <div id="c3" class="vcol">
+        <div id="c31" class="hcol2">
+            <div class="line">ChatGPT</div>
+            <textarea id="tagp" class="tarea" readonly></textarea>
+        </div>
+        <div id="c32" class="hcol2">
+            <div class="line">Gemini</div>
+            <textarea id="tage" class="tarea" readonly></textarea>
+        </div>
+        </div>
+        </div>
+    </body>
+    <!--body onload="init();">
+        <div id="div00" style="position: fixed; display: none; width: 100%; height: 100%; top: 0, left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); cursor: pointer;">
+            <div id="div01" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%)">
+                <img src="{{ url_for('static', filename='spinner.gif') }}" style="width: 20%; height: 20%; display: block; margin-left: auto; margin-right: auto;"/>
+            </div>
+        </div>
+        <select id='seid00' autocomplete='off' style='border-radius: 5px; border-width: 1px; border-style: outset'></select>
+        <select id='seid01' autocomplete='off' style='border-radius: 5px; border-width: 1px; border-style: outset'></select>
+        <br><br>
+        <textarea id="texa00" rows="10" style="width: 100%;"></textarea>
+        <br><br>
+        <textarea id="texa01" rows="10" style="width: 100%;"></textarea>
+        <br><br>
+        <button id="butt00" style="padding: 4px; margin-right: 4px;"></button>
+        <br><br>
+        <div id="div02" hidden></div>
+        <textarea id="texa02" rows="20" style="width: 100%;" ></textarea>
+        <form action="/v3/formIndex" id="formIndex" method="POST"></form>
+    </body-->
+</html>

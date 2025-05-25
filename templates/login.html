@@ -1,0 +1,28 @@
+<!doctype html>
+<html style="height: 100%;">
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
+        <script type="text/javascript">
+            function setup()    {
+                var elem = document.getElementById("inpu01");
+                elem.addEventListener('keyup', (e) => {
+                    if(e.keyCode === 13)    {
+                        var _form = document.getElementById("accessForm");
+                        var form_data = "<textarea name='c_user' hidden>" + e.target.value + "</textarea>";
+                        _form.innerHTML = form_data;
+                        _form.submit();
+                    }
+                });
+                elem.value = "";
+                elem.focus();
+            }
+        </script>
+    </head>
+    <body style="height: 90%; background: rgba(235, 240, 230, 1);" onload="setup();">
+        <div style="height: inherit; display: flex; align-items: center; justify-content: center">
+            Validar acceso:&nbsp;
+            <input id="inpu01" placeholder="email" style="background: #ffffff; border-radius: 5px; padding-top: 4px; padding-bottom: 4px; padding-left: 10px; padding-right: 10px; font: inherit; border-width: 1px; border-style: solid; border-color: #c0c0c0; width: 100%; max-width: 15rem;" />
+        </div>
+        <form action="/" id="accessForm" method="POST"></form>
+    </body>
+</html>

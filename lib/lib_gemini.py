@@ -21,7 +21,7 @@ def streamGem(json_data):
           "temperature": 0,
           "top_p": 0.95,
           "top_k": 40,
-          #"max_output_tokens": 8192,
+          "max_output_tokens": 8192 * 2,
           "response_mime_type": "application/json",
           "response_schema": list[singDiag],
         }

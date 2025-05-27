@@ -34,6 +34,7 @@ def streamGPT(json_data):
                 },
             ],
             text_format = diffDiag,
+            temperature = 0.,
         )
 
     except Exception as e:

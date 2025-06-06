@@ -39,6 +39,6 @@ def streamGem(json_data):
 
     for part in response:
         #print(f'{part.text}')
-        yield part.text
+        yield part.text.encode("utf-8")
 
     return "Empty response!"

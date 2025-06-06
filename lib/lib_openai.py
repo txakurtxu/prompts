@@ -47,4 +47,4 @@ def streamGPT(json_data):
         print(f'Exception converting json: {e}')
         ret_val = f'{response.output[0].content[0].text}'
 
-    return ret_val
+    return ret_val.encode().decode("unicode-escape")

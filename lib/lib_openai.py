@@ -16,35 +16,45 @@ def streamGPT(json_data):
     tach = unquote(json_data["tach"])
     tasc = unquote(json_data["tasc"])
     client = OpenAI(api_key = os.getenv("GPT_API_KEY"))
+    kwargs = {}
     try:
-        singDiag = create_class("openaiClass", tasc)
-        class diffDiag(BaseModel):
-            diagnosis_list: list[singDiag]
+        kwargs["model"] = mova
+        kwargs["input"] = [
+            {
+                "role": "system",
+                "content": tapr,
+            },
+            {
+                "role": "user",
+                "content": "Clinical case: " + tach + "\nPlease reply using the same language as the clinical case.",
+            },
+        ]
+        kwargs["temperature"] = 0.
+        if tapr.strip() == "":
+            kwargs["input"][1]["content"] = tach
 
-        response = client.responses.parse(
-            model = mova,
-            input = [
-                {
-                    "role": "system",
-                    "content": tapr,
-                },
-                {
-                    "role": "user",
-                    "content": "Clinical case: " + tach + "\nPlease reply using the same language as the clinical case.",
-                },
-            ],
-            text_format = diffDiag,
-            temperature = 0.,
-        )
+        if tasc.strip() != "":
+            try:
+                singDiag = create_class("openaiClass", tasc)
+                class diffDiag(BaseModel):
+                    diagnosis_list: list[singDiag]
+                kwargs["text_format"] = diffDiag
+            except Exception as e:
+                pass
+
+        response = client.responses.parse(**kwargs)
 
     except Exception as e:
         print(f'*** GPT error:\nerror: {e}')
         return f'{e}'
 
     try:
-        ret_val = json.dumps(json.loads(response.output[0].content[0].text)["diagnosis_list"], indent = 2)
+        if "text_format" in kwargs:
+            ret_val = json.dumps(json.loads(response.output[0].content[0].text)["diagnosis_list"], indent = 2).encode().decode("unicode-escape")
+        else:
+            ret_val = f'{response.output[0].content[0].text}'
     except Exception as e:
         print(f'Exception converting json: {e}')
         ret_val = f'{response.output[0].content[0].text}'
 
-    return ret_val.encode().decode("unicode-escape")
+    return ret_val

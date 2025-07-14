@@ -16,29 +16,39 @@ def streamGem(json_data):
 
     genai.configure(api_key = os.getenv("GEMINI_API_KEY"))
     try:
-        singDiag = create_class("geminiClass", tasc)
         generation_config = {
           "temperature": 0,
           "top_p": 0.95,
           "top_k": 40,
           "max_output_tokens": 8192 * 2,
           "response_mime_type": "application/json",
-          "response_schema": list[singDiag],
         }
+        if tasc.strip() != "":
+            try:
+                singDiag = create_class("geminiClass", tasc)
+                generation_config["response_schema"] = list[singDiag]
+            except Exception as e:
+                pass
 
-        model = genai.GenerativeModel(
-          model_name = mova,
-          generation_config = generation_config,
-          system_instruction = tapr,
-        )
-
-        response = model.generate_content("Clinical case: " + tach + "\nPlease reply using the same language as the clinical case.", stream = True)
+        kwargs = {}
+        kwargs["model_name"] = mova
+        kwargs["generation_config"] = generation_config
+        if tapr.strip() != "":
+            kwargs["system_instruction"] = tapr
+            model = genai.GenerativeModel(**kwargs)
+            response = model.generate_content("Clinical case: " + tach + "\nPlease reply using the same language as the clinical case.", stream = True)
+        else:
+            model = genai.GenerativeModel(**kwargs)
+            response = model.generate_content(tach + "\nPlease reply using the same language as above.", stream = True)
     except Exception as e:
         print(f'*** Gemini error:\nerror: {e}')
         return f'{e}'
 
     for part in response:
-        #print(f'{part.text}')
-        yield part.text.encode("utf-8")
+        try:
+            yield part.text.encode("utf-8")
+        except Exception as e:
+            print(f'Gemini exception: {e}')
+            yield ''
 
     return "Empty response!"

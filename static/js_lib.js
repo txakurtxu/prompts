@@ -16,6 +16,27 @@ function js_init()  {
                 }
             }
         });
+        if([0].includes(i))    {
+            TAarray[i].prompt = 0;
+            TAarray[i].addEventListener("keyup", function(e) {
+                var tar = e.target;
+                var tas = document.getElementsByClassName("tarea")[2];
+                if(e.keyCode === 113)    {
+                    var npro = 1;
+                    if(typeof TEST_PROMPTS !== 'undefined') {
+                        npro += TEST_PROMPTS.length;
+                    }
+                    tar.prompt = (tar.prompt + 1) % npro;
+                    if(tar.prompt === 0) {
+                        tar.value = DEFAULT_PROMPT;
+                        tas.value = DEFAULT_SCHEMA;
+                    }   else    {
+                        tar.value = TEST_PROMPTS[tar.prompt - 1];
+                        tas.value = TEST_SCHEMAS[tar.prompt - 1];
+                    }
+                }
+            });
+        }
     }
     var SEarray = document.getElementsByClassName("sel");   
     var INarray = document.getElementsByClassName("inp");

@@ -4,10 +4,6 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"/>
         <script type="text/javascript" src="{{ url_for('static', filename='js_vars.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js_lib.js') }}"></script>
-        <!--script type="text/javascript">
-            var up_info = eval(decodeURIComponent("{{up_info}}"));
-            //var res_data = eval(decodeURIComponent("{{res_data}}"));
-        </script-->
     </head>
     <body onload="js_init();">
         <div style="height: inherit; display: flex;">
@@ -16,7 +12,7 @@
             <div class="line">Prompt</div>
             <textarea id="tapr" class="tarea"></textarea>
         </div>
-        <div id="c12" class="hcol2">
+        <div id="c12" class="hcol2" style="overflow-y: auto;">
             <div class="line">Models</div>
             <div style="display: flex; align-items: center; padding-top: 10px;">
                 <select id="segp" class="sel" autocomplete="off"></select>
@@ -31,7 +27,22 @@
             <div style="display: flex; align-items: center; padding-top: 10px;">
                 <select id="seal" class="sel" autocomplete="off"></select>
                 <input id="inal" class="inp" />
-                <button id="bual" class="but">Run All</button>
+                <button id="bual" class="but">Run both</button>
+            </div>
+            <hr style="height: 1px; border: none; background-color: black; margin-left: 3px; margin-right: 3px;">
+            <div class="line" style="font-size: 95%; margin-top: -3px; margin-bottom: 3px;">
+                <small>OR </small>parse symptoms via:
+            </div>
+            <div style="font-size: 90%; margin-left: 1rem;">
+                <input id="inc1" type="checkbox"/>
+                <a id="inc3">chatGPT</a>
+            </div>
+            <div style="font-size: 90%; margin-left: 1rem;">
+                <input id="inc2" type="checkbox"/>
+                <a id="inc4">Gemini</a>
+            </div>
+            <div style="display: flex; align-items: center; padding-top: 10px; margin-bottom: 5px">
+                <a style="font-size: 95%; padding-left: 5px;">and run</a><button id="aste" class="but" style="margin-left: .5rem;">All steps</button>
             </div>
         </div>
         </div>
@@ -57,23 +68,4 @@
         </div>
         </div>
     </body>
-    <!--body onload="init();">
-        <div id="div00" style="position: fixed; display: none; width: 100%; height: 100%; top: 0, left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); cursor: pointer;">
-            <div id="div01" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%)">
-                <img src="{{ url_for('static', filename='spinner.gif') }}" style="width: 20%; height: 20%; display: block; margin-left: auto; margin-right: auto;"/>
-            </div>
-        </div>
-        <select id='seid00' autocomplete='off' style='border-radius: 5px; border-width: 1px; border-style: outset'></select>
-        <select id='seid01' autocomplete='off' style='border-radius: 5px; border-width: 1px; border-style: outset'></select>
-        <br><br>
-        <textarea id="texa00" rows="10" style="width: 100%;"></textarea>
-        <br><br>
-        <textarea id="texa01" rows="10" style="width: 100%;"></textarea>
-        <br><br>
-        <button id="butt00" style="padding: 4px; margin-right: 4px;"></button>
-        <br><br>
-        <div id="div02" hidden></div>
-        <textarea id="texa02" rows="20" style="width: 100%;" ></textarea>
-        <form action="/v3/formIndex" id="formIndex" method="POST"></form>
-    </body-->
 </html>

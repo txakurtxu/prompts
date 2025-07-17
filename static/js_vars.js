@@ -232,3 +232,9 @@ items_incongruent_with_disease: list[str]`,
 
 `triage_level: str
 triage_justification: str`];
+
+const PROMPT_LABELS= [` - Original (web)`,
+` - Symptoms`,
+` - Diagnosis`,
+` - Triage`
+];

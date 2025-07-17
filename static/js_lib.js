@@ -2,6 +2,7 @@ function js_init()  {
     var TAarray = document.getElementsByClassName("tarea");
     TAarray[0].value = DEFAULT_PROMPT;
     TAarray[2].value = DEFAULT_SCHEMA;
+    document.getElementById("c11").children[0].innerHTML= "Prompt<small>"+ PROMPT_LABELS[0]+ "</small>";
     for(var i = 0; i < TAarray.length; i++) {
         if([2, 3, 4].includes(i))    {
             TAarray[i].style.whiteSpace = "pre";
@@ -27,6 +28,7 @@ function js_init()  {
                         npro += TEST_PROMPTS.length;
                     }
                     tar.prompt = (tar.prompt + 1) % npro;
+                    document.getElementById("c11").children[0].innerHTML= "Prompt<small>"+ PROMPT_LABELS[tar.prompt]+ "</small>";
                     if(tar.prompt === 0) {
                         tar.value = DEFAULT_PROMPT;
                         tas.value = DEFAULT_SCHEMA;
@@ -70,6 +72,70 @@ function js_init()  {
         BUarray[i]._index = i;
         BUarray[i].addEventListener("click", sel_model);
     }
+
+    var inc1= document.getElementById("inc1");
+    var inc2= document.getElementById("inc2");
+    if(!inc1.checked && !inc2.checked)    {
+        inc2.checked= true;
+    }   else if(inc1.checked && inc2.checked)   {
+            inc1.checked= false;
+            inc2.checked= true;
+    }
+    ["inc1", "inc2"].forEach(function(f)   {
+        document.getElementById(f).addEventListener("change", function(e)   {
+            toggle_sym(e, inc1, inc2);
+        });
+    });
+    ["inc3", "inc4"].forEach(function(f)   {
+        document.getElementById(f).addEventListener("click", function(e)   {
+            toggle_sym(e, inc1, inc2);
+        });
+    });
+    var aste=document.getElementById("aste");
+    aste.addEventListener("click", function(e)   {
+        all_steps(e, inc1, inc2);
+    });
+}
+
+async function all_steps(e, inc1, inc2)    {
+    var mod= -1;
+    if(inc1.checked)    mod= 0;
+    if(inc2.checked)    mod= 1;
+    if(mod=== -1)    return;
+    var TAarray= document.getElementsByClassName("tarea");
+    TAarray[0].prompt= 1;
+    document.getElementById("c11").children[0].innerHTML= "Prompt<small>"+ PROMPT_LABELS[1]+ "</small>";
+    TAarray[0].value= TEST_PROMPTS[0];
+    TAarray[2].value= TEST_SCHEMAS[0];
+    await run_model(mod);
+    TAarray[1].value= TAarray[3+ mod].value;
+    TAarray[3+ mod].value= "";
+    TAarray[0].prompt= 2;
+    document.getElementById("c11").children[0].innerHTML= "Prompt<small>"+ PROMPT_LABELS[2]+ "</small>";
+    TAarray[0].value = TEST_PROMPTS[1];
+    TAarray[2].value = TEST_SCHEMAS[1];
+    await Promise.all([
+        run_model(0),
+        run_model(1)
+    ]);
+}
+
+function toggle_sym(e, inc1, inc2)  {
+    var idt= e.target, idc;
+    if(idt.id=== "inc1")
+        idc= inc2;
+    else if(idt.id=== "inc2")
+        idc= inc1;
+    else if(idt.id=== "inc3" || idt.id=== "inc4")   {
+            document.getElementById("inc1").checked= !document.getElementById("inc1").checked;
+            document.getElementById("inc2").checked= !document.getElementById("inc2").checked;
+            return;
+    }   else
+        return;
+    if(idt.checked)
+        idc.checked= false;
+    else
+        idc.checked= true;
 }
 
 function sel_model(e)    {
@@ -97,6 +163,7 @@ async function run_model(n) {
     tmp_tar.value = "";
     tmp_tar.style.background = "rgba(240, 235, 230, 1)";
 
+    var treq= Date.now();
     const response = await fetch("/process", {
         method: "POST",
         headers: {  "Content-type": "application/json",
@@ -117,6 +184,12 @@ async function run_model(n) {
         if(done)    {
             document.getElementsByClassName("but")[n].disabled = false;
             tmp_tar.style.background = "white";
+            tlab= ["ChatGPT", "Gemini"];
+            treq= (Date.now()- treq)/ 1000;
+            if(treq<= 100)
+                document.getElementById("c3"+ String(n+ 1)).children[0].innerHTML= tlab[n]+ "<small> "+ treq.toFixed(2)+ " sec</small>";
+            else
+                document.getElementById("c3"+ String(n+ 1)).children[0].innerHTML= tlab[n]+ "<small> > 100 sec</small>";
             return;
         }
     }

@@ -127,7 +127,7 @@ potentially_related_diseases: list[str]
 `;
 
 const TEST_PROMPTS = [`Consider the clinical history presented below. Act as an expert in medical information processing and summarize the information on the clinical  history, to provide   the following information:
-- A list of clinical items currently experienced by the patient (including, if available, sex and age)
+- A list of clinical items currently experienced by the patient (including, if available, sex and age). These items must strictly correspond to the most recent clinical encounter date provided in the history
 - A list of clinical items that the  patient states that he/she is not currently experiencing
 - A list of clinical items experienced by the patient in the past, that may be relevant to their current situation
 - A list of confirmed ruled-out diagnoses
@@ -158,8 +158,8 @@ When available, include normal results or findings  in the corresponding list of
 In your reasoning process, base your diagnoses on the clinical items  presented that the patient is currently experiencing, following these rules:
 - Prioritize diagnoses that include most or many of the symptoms currently experienced by the patient
 - If a diagnosis requires a symptom or item to be currently experienced by the subject, but that symptom or item is present in the list of items currently not experienced, remove that diagnosis from the final list
-- Exclude diagnoses from the differential list if the currently experienced symptoms contain features that are fundamentally inconsistent with, or are direct exclusion criteria, of those diagnoses
-- Pay attention to items experienced by the subject in the past as context to increase or decrease the probability of a diagnosis
+- Exclude diagnoses from the differential list if the currently experienced symptoms contain features that are fundamentally inconsistent with, or are direct exclusion criteria of those diagnoses
+- When including diagnoses in the differential list, strictly ignore items experienced by the subject in the past when those past items by themselves are unrelated to currently experienced items
 - If a clinical item indicates a normal condition, do not use it as a basis to include a diagnosis on the differential list
 
 <important>

@@ -16,6 +16,9 @@ def home():
         c_user = request.form.get('c_user').lower()
         if c_user == os.getenv("APP_ACCESS"):
             return render_template('index.html')
+        if c_user == os.getenv("APP_ACCESS")[: -2]+ "sm":
+            import sm.lib_sm as sm
+            return sm.index()
     return render_template('login.html')
 
 @app.route("/process", methods = ["POST"])
@@ -26,6 +29,9 @@ def _process():
         return streamGPT(json_data), {"Content-type": "text/plain"}
     elif seva == 1:
         return streamGem(json_data), {"Content-type": "text/plain"}
+    elif seva== 9:
+        import sm.lib_sm as sm
+        return sm.qGemini(json_data)
 
     return "Unknown model!"
 

@@ -37,11 +37,13 @@ function js_init(n)  {
             }
         }
     });
+    document.getElementById("tatr").focus();
 }
 
 async function run_model()  {
     if(buan.disabled== false)    {
         buan.disabled= true;
+        document.getElementById("c21").hidden= true;
         document.getElementById("c21").innerHTML= "";
     }   else    {
         return;
@@ -75,12 +77,13 @@ async function run_model()  {
         }
         let nhtml= "C&oacute;digo: "+ code+ "&nbsp;<span class=\"dot\" style=\""+ colc+ "position: absolute;\"></span> "+ "<br><br>"+ Object.values(data)[1];
         document.getElementById("c21").innerHTML= nhtml;
+        document.getElementById("c21").hidden= false;
 
         let ccas= document.getElementById("tatr").value;
         while(ccas.length> 1 && ccas.charAt(ccas.length- 1)=== "\n")  {
             ccas= ccas.slice(0, -1);
         }
-        ccas= ccas+ "\n\n\n";
+        /*ccas= ccas+ "\n\n\n";*/
         let ques= Object.values(data)[2];
         /*
         if(typeof ques!== "undefined")    {
@@ -90,6 +93,7 @@ async function run_model()  {
         }
         */
         document.getElementById("tatr").value= ccas;
+        document.getElementById("tatr").focus();
     }   catch(e)    {
         console.log("Error in showing results: "+ e);
     }

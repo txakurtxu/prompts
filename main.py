@@ -32,6 +32,9 @@ def _process():
     elif seva== 9:
         import sm.lib_sm as sm
         return sm.qGemini(json_data)
+    elif seva== 10:
+        import sm.lib_sm as sm
+        return sm.qGPT(json_data)
 
     return "Unknown model!"
 

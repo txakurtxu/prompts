@@ -61,3 +61,47 @@ def qGemini(json_data):
         return f'{e}'
 
     return "Empty response!"
+
+from openai import OpenAI
+def qGPT(json_data):
+    mova= json_data["mova"]
+    tapr= unquote(json_data["tapr"])
+    tach= unquote(json_data["tach"])
+    tasc= unquote(json_data["tasc"])
+
+    client= OpenAI(api_key= os.getenv("GPT_API_KEY"))
+    try:
+        kwargs= {}
+        kwargs["model"]= mova
+        kwargs["input"]= [
+            {
+                "role": "system",
+                "content": tapr,
+            },
+            {
+                "role": "user",
+                "content": "Clinical case: " + tach + "\nPlease reply using the same language as the clinical case.",
+            },
+        ]
+        kwargs["temperature"]= 0
+        if tapr.strip()== "":
+            kwargs["input"][1]["content"]= tach
+
+        if tasc.strip()!= "":
+            try:
+                singDiag= create_class("openaiClass", tasc)
+                class diffDiag(BaseModel):
+                    diagnosis_list: list[singDiag]
+                kwargs["text_format"]= diffDiag
+            except Exception as e:
+                pass
+
+        response= client.responses.parse(**kwargs)
+        r= response.output[0].content[0].text
+        return json.loads(r[r.find("{"): r.rfind("}")+ 1])
+
+    except Exception as e:
+        print(f'*** chatGPT error:\nerror: {e}')
+        return f'{e}'
+
+    return "Empty response!"

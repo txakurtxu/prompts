@@ -8,7 +8,7 @@ let saved_html;
 
 function js_init(n)  {
     buan= document.getElementById("buan");
-    buan.addEventListener("click", run_model);
+    buan.addEventListener("click", run_models);
     document.getElementById("imkn").hidden= false;
     document.getElementById("imsm").hidden= false;
     if(n!== 0)   {
@@ -40,21 +40,31 @@ function js_init(n)  {
     document.getElementById("tatr").focus();
 }
 
-async function run_model()  {
+async function run_models()   {
     if(buan.disabled== false)    {
         buan.disabled= true;
-        document.getElementById("c21").hidden= true;
-        document.getElementById("c21").innerHTML= "";
+        document.getElementById("c2"+ String(1)).hidden= true;
+        document.getElementById("c2"+ String(2)).hidden= true;
+        document.getElementById("c2"+ String(1)).innerHTML= "";
+        document.getElementById("c2"+ String(2)).innerHTML= "";
     }   else    {
         return;
     }
+    await Promise.all([
+        run_model(0),
+        run_model(1)
+    ]);
+    buan.disabled= false;
+}
+
+async function run_model(mn)  {
     try {
         const response= await fetch("/process", {
             method: "POST",
             headers: {  "Content-type": "application/json",
             },
-            body: JSON.stringify({ 'seva': 9,
-                'mova': GEMINI_MODELS[0],
+            body: JSON.stringify({ 'seva': 9+ mn,
+                'mova': MODELS[mn][0],
                 'tapr': "",
                 'tach': CUR_PRO.replaceAll("XXX", document.getElementById("tatr").value),
                 'tasc': CUR_SCH
@@ -75,9 +85,9 @@ async function run_model()  {
         }   else if(["negro"].includes(code.toLowerCase()))   {
             colc= "background-color: rgba(0, 0, 0, 1); ";
         }
-        let nhtml= "C&oacute;digo: "+ code+ "&nbsp;<span class=\"dot\" style=\""+ colc+ "position: absolute;\"></span> "+ "<br><br>"+ Object.values(data)[1];
-        document.getElementById("c21").innerHTML= nhtml;
-        document.getElementById("c21").hidden= false;
+        let nhtml= "<b>Modelo "+ String(mn+ 1) + " - </b>C&oacute;digo: "+ code+ "&nbsp;<span class=\"dot\" style=\""+ colc+ "position: absolute;\"></span> "+ "<br><br>"+ Object.values(data)[1];
+        document.getElementById("c2"+ String(mn+ 1)).innerHTML= nhtml;
+        document.getElementById("c2"+ String(mn+ 1)).hidden= false;
 
         let ccas= document.getElementById("tatr").value;
         while(ccas.length> 1 && ccas.charAt(ccas.length- 1)=== "\n")  {
@@ -97,5 +107,4 @@ async function run_model()  {
     }   catch(e)    {
         console.log("Error in showing results: "+ e);
     }
-    buan.disabled= false;
 }

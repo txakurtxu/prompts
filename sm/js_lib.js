@@ -85,7 +85,11 @@ async function run_model(mn)  {
         }   else if(["negro"].includes(code.toLowerCase()))   {
             colc= "background-color: rgba(0, 0, 0, 1); ";
         }
-        let nhtml= "<b>Modelo "+ String(mn+ 1) + " - </b>C&oacute;digo: "+ code+ "&nbsp;<span class=\"dot\" style=\""+ colc+ "position: absolute;\"></span> "+ "<br><br>"+ Object.values(data)[1];
+        let objv= "";
+        for(var i= 1; i< Object.values(data).length; i++)   {
+            objv+= "&#x2022; "+ Object.values(data)[i]+ "<br>";
+        } 
+        let nhtml= "<b>Modelo "+ String(mn+ 1) + " - </b>C&oacute;digo: "+ code+ "&nbsp;<span class=\"dot\" style=\""+ colc+ "position: absolute;\"></span> "+ "<br><br>"+ objv;
         document.getElementById("c2"+ String(mn+ 1)).innerHTML= nhtml;
         document.getElementById("c2"+ String(mn+ 1)).hidden= false;
 

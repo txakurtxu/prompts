@@ -90,9 +90,7 @@ def qGPT(json_data):
         if tasc.strip()!= "":
             try:
                 singDiag= create_class("openaiClass", tasc)
-                class diffDiag(BaseModel):
-                    diagnosis_list: list[singDiag]
-                kwargs["text_format"]= diffDiag
+                kwargs["text_format"]= singDiag
             except Exception as e:
                 pass
 

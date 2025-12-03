@@ -2,8 +2,10 @@ const GPT_MODELS = ["gpt-4o",
     "gpt-4o-mini",
     "o4-mini"];
 
-const GEMINI_MODELS = ["gemini-2.5-flash-preview-05-20",
-    "gemini-2.5-pro-preview-03-25",
+const GEMINI_MODELS = ["gemini-2.5-flash-preview-09-2025",
+    "gemini-2.5-pro",
+    "gemini-flash-latest",
+    "gemini-pro-latest",
     "gemini-2.0-flash"];
 
 const DEFAULT_PROMPT = `Objective:
@@ -126,14 +128,14 @@ drugs_to_treat_disease: list[str]
 potentially_related_diseases: list[str]
 `;
 
-const TEST_PROMPTS = [`Consider the clinical history presented below. Act as an expert in medical information processing and summarize the information on the clinical  history, to provide   the following information:
-- A list of clinical items currently experienced by the patient (including, if available, sex and age). These items must strictly correspond to the most recent clinical encounter date provided in the history
-- A list of clinical items that the  patient states that he/she is not currently experiencing
+const TEST_PROMPTS = [`Consider the clinical history presented below. Act as an expert in medical information processing and summarize the information on the clinical history, to provide the following information:
+- A list of clinical items currently experienced by the patient (including, if available, sex and age). These items must strictly and exclusively correspond to the most recent clinical encounter date provided in the history
+- A list of clinical items that the patient states that he/she is not currently experiencing
 - A list of clinical items experienced by the patient in the past, that may be relevant to their current situation
 - A list of confirmed ruled-out diagnoses
 
 Consider as clinical items any symptom, medical sign, result of a test, medication, laboratory, radiology, biopsy or medical procedure
-When available, include normal results or findings  in the corresponding list of items
+When available, include normal results or findings in the corresponding list of items
 
 <important>
   - If no relevant information was provided, just answer with no text. Do not try to make up any information. For example, if the clinical history is empty, just answer with no text.
